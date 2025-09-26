@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Image to PDF - PDF Tools Images</title>
+  <title>📷 Image to PDF - PDF Tools</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/cropper.min.css">
 </head>
@@ -19,8 +19,8 @@
 
     <label for="pdfSize">PDF Size:</label>
     <select id="pdfSize">
-      <option value="A4">A4 (210x297 mm)</option>
-      <option value="F4">F4 (210x330 mm)</option>
+      <option value="A4">A4 (210×297 mm)</option>
+      <option value="F4">F4 (210×330 mm)</option>
     </select>
 
     <button class="icon-btn" id="downloadPDFBtn">
@@ -31,11 +31,12 @@
   <!-- Hidden file input -->
   <input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none">
 
-  <!-- Cropper modal -->
-  <div id="cropModal"></div>
+  <!-- Modal cropper -->
+  <div id="cropModal" style="display:none;"></div>
 
-  <!-- Libraries -->
+  <!-- Scripts -->
   <script src="js/cropper.min.js"></script>
-  <script type="module" src="js/image-to-pdf.js"></script>
+  <script src="js/jspdf.umd.min.js"></script>
+  <script src="js/image-to-pdf.js"></script>
 </body>
 </html>
