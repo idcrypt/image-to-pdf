@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image to PDF - PDF Tools Images</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/cropper.min.css">
+</head>
+<body>
+  <div class="container">
+    <h1>📷 Image to PDF</h1>
+
+    <button class="icon-btn" id="addPhotoBtn">
+      <img src="assets/icons/camera.svg" alt="Camera"> Add Photo
+    </button>
+
+    <div class="photo-list" id="photoList"></div>
+
+    <label for="pdfSize">PDF Size:</label>
+    <select id="pdfSize">
+      <option value="A4">A4 (210x297 mm)</option>
+      <option value="F4">F4 (210x330 mm)</option>
+    </select>
+
+    <button class="icon-btn" id="downloadPDFBtn">
+      <img src="assets/icons/download.svg" alt="Download"> Download PDF
+    </button>
+  </div>
+
+  <!-- Hidden file input -->
+  <input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none">
+
+  <!-- Cropper modal -->
+  <div id="cropModal"></div>
+
+  <script src="js/cropper.min.js"></script>
+  <script src="js/jspdf.umd.min.js"></script>
+  <script src="js/image-to-pdf.js"></script>
+</body>
+</html>
