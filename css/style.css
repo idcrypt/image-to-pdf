@@ -1,0 +1,107 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #0a0a0a;
+  color: #fff;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  background: #111;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,255,200,0.2);
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #00e0ff, #ff004c);
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.icon-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.photo-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.photo-item {
+  position: relative;
+  width: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px #00e0ff33, 0 0 15px #ff004c22;
+}
+
+.photo-item img {
+  width: 100%;
+  display: block;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  background: #ff004c;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#cropModal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  flex-direction: column;
+  padding: 20px;
+}
+
+#cropModal img {
+  max-width: 100%;
+  max-height: 80%;
+  display: block;
+  border-radius: 8px;
+}
+
+#cropModal button {
+  margin-top: 15px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  background: #00e0ff;
+  border: none;
+  border-radius: 8px;
+}
