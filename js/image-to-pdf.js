@@ -76,17 +76,14 @@ function openCropper(imgSrc) {
     autoCropArea: 1,
     responsive: true,
     background: false,
-    ready() {
-      // preview realtime
-      cropper.on("crop", () => {
-        const canvas = cropper.getCroppedCanvas({
-          width: 100,
-          height: 100,
-        });
-        if (canvas) {
-          previewImage.src = canvas.toDataURL("image/jpeg");
-        }
+    crop() {
+      const canvas = cropper.getCroppedCanvas({
+        width: 100,
+        height: 100,
       });
+      if (canvas) {
+        previewImage.src = canvas.toDataURL("image/jpeg");
+      }
     },
   });
 }
@@ -95,8 +92,10 @@ function openCropper(imgSrc) {
 applyBtn.addEventListener("click", () => {
   if (!cropper) return;
   const canvas = cropper.getCroppedCanvas();
-  photos.push(canvas.toDataURL("image/jpeg"));
-  renderPhotos();
+  if (canvas) {
+    photos.push(canvas.toDataURL("image/jpeg"));
+    renderPhotos();
+  }
 
   cropper.destroy();
   cropper = null;
