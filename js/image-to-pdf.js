@@ -8,8 +8,27 @@ const downloadPDFBtn = document.getElementById("downloadPDFBtn");
 const pdfSizeSelect = document.getElementById("pdfSize");
 
 const cropModal = document.getElementById("cropModal");
+
+// --- buat container modal crop ---
+const cropContent = document.createElement("div");
+cropContent.classList.add("crop-content");
+
 let cropImage = document.createElement("img");
-cropModal.appendChild(cropImage);
+cropImage.classList.add("crop-image");
+
+const applyBtn = document.createElement("button");
+applyBtn.textContent = "Apply";
+applyBtn.classList.add("btn-apply");
+
+const cancelBtn = document.createElement("button");
+cancelBtn.textContent = "Cancel";
+cancelBtn.classList.add("btn-cancel");
+
+// masukkan ke modal
+cropContent.appendChild(cropImage);
+cropContent.appendChild(applyBtn);
+cropContent.appendChild(cancelBtn);
+cropModal.appendChild(cropContent);
 
 let photos = [];
 let cropper = null;
@@ -46,9 +65,7 @@ function openCropper(imgSrc) {
   });
 }
 
-// Tombol Apply & Cancel
-const applyBtn = document.createElement("button");
-applyBtn.textContent = "Apply";
+// Apply crop
 applyBtn.addEventListener("click", () => {
   if (!cropper) return;
 
@@ -61,8 +78,7 @@ applyBtn.addEventListener("click", () => {
   cropModal.style.display = "none";
 });
 
-const cancelBtn = document.createElement("button");
-cancelBtn.textContent = "Cancel";
+// Cancel crop
 cancelBtn.addEventListener("click", () => {
   if (cropper) {
     cropper.destroy();
@@ -70,9 +86,6 @@ cancelBtn.addEventListener("click", () => {
   }
   cropModal.style.display = "none";
 });
-
-cropModal.appendChild(applyBtn);
-cropModal.appendChild(cancelBtn);
 
 // Render preview foto
 function renderPhotos() {
