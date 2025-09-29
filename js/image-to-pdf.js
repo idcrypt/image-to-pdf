@@ -1,68 +1,69 @@
-// Ambil jsPDF dari global UMD
-const { jsPDF } = window.jspdf;
+// Pakai jsPDF dari global yang sudah di-assign
+const jsPDF = window.jsPDF;
 
 const addPhotoBtn = document.getElementById("addPhotoBtn");
 const photoInput = document.getElementById("photoInput");
 const photoList = document.getElementById("photoList");
 const downloadPDFBtn = document.getElementById("downloadPDFBtn");
 const pdfSizeSelect = document.getElementById("pdfSize");
-
 const cropModal = document.getElementById("cropModal");
 const cropImage = document.getElementById("cropImage");
 const applyCropBtn = document.getElementById("applyCropBtn");
 const cancelCropBtn = document.getElementById("cancelCropBtn");
 
 let photos = [];
-let cropper = null;
+let cropper;
 
 // Buka input kamera/gallery
 addPhotoBtn.addEventListener("click", () => {
   photoInput.click();
 });
 
-// Load foto dari input → buka cropper
+// Load foto dari input
 photoInput.addEventListener("change", (event) => {
   const file = event.target.files[0];
   if (!file) return;
 
   const reader = new FileReader();
   reader.onload = (e) => {
-    cropImage.src = e.target.result;
-    cropModal.style.display = "flex";
-
-    if (cropper) cropper.destroy();
-    cropper = new Cropper(cropImage, {
-      aspectRatio: NaN,
-      viewMode: 1,
-    });
+    openCropper(e.target.result);
   };
   reader.readAsDataURL(file);
 });
 
+// Tampilkan cropper modal
+function openCropper(src) {
+  cropImage.src = src;
+  cropModal.style.display = "flex";
+
+  if (cropper) {
+    cropper.destroy();
+  }
+  cropper = new Cropper(cropImage, {
+    aspectRatio: NaN,
+    viewMode: 1,
+  });
+}
+
 // Apply crop
 applyCropBtn.addEventListener("click", () => {
   if (!cropper) return;
-
-  const canvas = cropper.getCroppedCanvas({
-    width: 1080,
-    imageSmoothingQuality: "high",
-  });
-
-  photos.push(canvas.toDataURL("image/jpeg", 0.9));
+  const canvas = cropper.getCroppedCanvas();
+  const croppedImage = canvas.toDataURL("image/jpeg");
+  photos.push(croppedImage);
   renderPhotos();
-
-  cropModal.style.display = "none";
   cropper.destroy();
   cropper = null;
+  cropModal.style.display = "none";
 });
 
 // Cancel crop
 cancelCropBtn.addEventListener("click", () => {
-  cropModal.style.display = "none";
   if (cropper) {
     cropper.destroy();
     cropper = null;
   }
+  cropModal.style.display = "none";
 });
 
 // Render preview foto
@@ -107,7 +108,7 @@ downloadPDFBtn.addEventListener("click", () => {
 
   photos.forEach((src, i) => {
     if (i > 0) pdf.addPage();
-    pdf.addImage(src, "JPEG", 10, 10, 190, 277); // ukuran standar
+    pdf.addImage(src, "JPEG", 10, 10, 190, 277);
   });
 
   pdf.save("document.pdf");
