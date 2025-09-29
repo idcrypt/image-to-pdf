@@ -1,5 +1,5 @@
-// Ambil jsPDF dari global
-const { jsPDF } = window.jspdf || window;
+// Ambil jsPDF dari global UMD
+const { jsPDF } = window.jspdf;
 
 const addPhotoBtn = document.getElementById("addPhotoBtn");
 const photoInput = document.getElementById("photoInput");
@@ -8,9 +8,8 @@ const downloadPDFBtn = document.getElementById("downloadPDFBtn");
 const pdfSizeSelect = document.getElementById("pdfSize");
 
 const cropModal = document.getElementById("cropModal");
-const cropImage = document.getElementById("cropImage");
-const applyCrop = document.getElementById("applyCrop");
-const cancelCrop = document.getElementById("cancelCrop");
+let cropImage = document.createElement("img");
+cropModal.appendChild(cropImage);
 
 let photos = [];
 let cropper = null;
@@ -28,14 +27,14 @@ photoInput.addEventListener("change", (event) => {
   const reader = new FileReader();
   reader.onload = (e) => {
     if (!e.target.result) return;
-    openCropper(e.target.result);
+    openCropper(e.target.result); // buka modal cropper
   };
   reader.readAsDataURL(file);
 });
 
-// Buka modal cropper
+// Fungsi buka cropper modal
 function openCropper(imgSrc) {
-  cropModal.style.display = "flex";
+  cropModal.style.display = "flex"; // tampilkan modal
   cropImage.src = imgSrc;
 
   if (cropper) cropper.destroy();
@@ -47,25 +46,33 @@ function openCropper(imgSrc) {
   });
 }
 
-// Apply crop
-applyCrop.addEventListener("click", () => {
+// Tombol Apply & Cancel
+const applyBtn = document.createElement("button");
+applyBtn.textContent = "Apply";
+applyBtn.addEventListener("click", () => {
   if (!cropper) return;
+
   const canvas = cropper.getCroppedCanvas();
   photos.push(canvas.toDataURL("image/jpeg"));
   renderPhotos();
-  cropModal.style.display = "none";
+
   cropper.destroy();
   cropper = null;
+  cropModal.style.display = "none";
 });
 
-// Cancel crop
-cancelCrop.addEventListener("click", () => {
-  cropModal.style.display = "none";
+const cancelBtn = document.createElement("button");
+cancelBtn.textContent = "Cancel";
+cancelBtn.addEventListener("click", () => {
   if (cropper) {
     cropper.destroy();
     cropper = null;
   }
+  cropModal.style.display = "none";
 });
+
+cropModal.appendChild(applyBtn);
+cropModal.appendChild(cancelBtn);
 
 // Render preview foto
 function renderPhotos() {
