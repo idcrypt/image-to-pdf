@@ -76,23 +76,7 @@ h1 {
 }
 
 /* Modal Cropper */
-#cropModal {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.9);
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-/* Modal fix */
-/* modal utama */
+/* Modal Cropper Fix */
 #cropModal {
   display: none;
   position: fixed;
