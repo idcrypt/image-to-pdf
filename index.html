@@ -33,9 +33,9 @@
 
   <!-- Modal cropper -->
   <div id="cropModal">
-    <img id="cropImage" alt="Crop Preview">
+    <img id="cropImage" src="">
     <div>
-      <button id="applyCropBtn">Crop & Add</button>
+      <button id="applyCropBtn">Apply Crop</button>
       <button id="cancelCropBtn">Cancel</button>
     </div>
   </div>
@@ -43,6 +43,12 @@
   <!-- Scripts -->
   <script src="js/cropper.min.js"></script>
   <script src="js/jspdf.umd.min.js"></script>
+  <script>
+    // pastikan global jsPDF ada
+    if (window.jspdf && window.jspdf.jsPDF) {
+      window.jsPDF = window.jspdf.jsPDF;
+    }
+  </script>
   <script src="js/image-to-pdf.js"></script>
 </body>
 </html>
