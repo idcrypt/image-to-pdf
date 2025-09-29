@@ -9,39 +9,34 @@ const pdfSizeSelect = document.getElementById("pdfSize");
 
 const cropModal = document.getElementById("cropModal");
 
-// --- buat container modal crop ---
+// Buat struktur modal
 const cropContent = document.createElement("div");
-cropContent.classList.add("crop-content");
+cropContent.className = "crop-content";
 
-// kiri: preview hasil crop kecil
 const previewBox = document.createElement("div");
-previewBox.classList.add("crop-preview-box");
-const previewImage = document.createElement("img");
-previewBox.appendChild(previewImage);
+previewBox.className = "crop-preview-box";
+const cropPreview = document.createElement("img");
+previewBox.appendChild(cropPreview);
 
-// kanan: area cropper utama
 const cropBox = document.createElement("div");
-cropBox.classList.add("crop-box");
-let cropImage = document.createElement("img");
-cropImage.classList.add("crop-image");
+cropBox.className = "crop-box";
+const cropImage = document.createElement("img");
 cropBox.appendChild(cropImage);
 
-// bawah: tombol
-const btnRow = document.createElement("div");
-btnRow.classList.add("crop-buttons");
+const cropButtons = document.createElement("div");
+cropButtons.className = "crop-buttons";
 const applyBtn = document.createElement("button");
 applyBtn.textContent = "Apply";
-applyBtn.classList.add("btn-apply");
+applyBtn.className = "btn-apply";
 const cancelBtn = document.createElement("button");
 cancelBtn.textContent = "Cancel";
-cancelBtn.classList.add("btn-cancel");
-btnRow.appendChild(applyBtn);
-btnRow.appendChild(cancelBtn);
+cancelBtn.className = "btn-cancel";
+cropButtons.appendChild(applyBtn);
+cropButtons.appendChild(cancelBtn);
 
-// gabungkan
 cropContent.appendChild(previewBox);
 cropContent.appendChild(cropBox);
-cropContent.appendChild(btnRow);
+cropContent.appendChild(cropButtons);
 cropModal.appendChild(cropContent);
 
 let photos = [];
@@ -60,14 +55,14 @@ photoInput.addEventListener("change", (event) => {
   const reader = new FileReader();
   reader.onload = (e) => {
     if (!e.target.result) return;
-    openCropper(e.target.result);
+    openCropper(e.target.result); // buka modal cropper
   };
   reader.readAsDataURL(file);
 });
 
 // Fungsi buka cropper modal
 function openCropper(imgSrc) {
-  cropModal.style.display = "flex";
+  cropModal.classList.add("show"); // tampilkan modal
   cropImage.src = imgSrc;
 
   if (cropper) cropper.destroy();
@@ -76,14 +71,15 @@ function openCropper(imgSrc) {
     autoCropArea: 1,
     responsive: true,
     background: false,
-    crop() {
-      const canvas = cropper.getCroppedCanvas({
-        width: 100,
-        height: 100,
-      });
-      if (canvas) {
-        previewImage.src = canvas.toDataURL("image/jpeg");
-      }
+    ready() {
+      // Update preview real-time
+      const updatePreview = () => {
+        const canvas = cropper.getCroppedCanvas({ width: 120, height: 120 });
+        cropPreview.src = canvas.toDataURL("image/jpeg");
+      };
+      cropper.crop();
+      cropImage.addEventListener("crop", updatePreview);
+      updatePreview();
     },
   });
 }
@@ -91,15 +87,14 @@ function openCropper(imgSrc) {
 // Apply crop
 applyBtn.addEventListener("click", () => {
   if (!cropper) return;
+
   const canvas = cropper.getCroppedCanvas();
-  if (canvas) {
-    photos.push(canvas.toDataURL("image/jpeg"));
-    renderPhotos();
-  }
+  photos.push(canvas.toDataURL("image/jpeg"));
+  renderPhotos();
 
   cropper.destroy();
   cropper = null;
-  cropModal.style.display = "none";
+  cropModal.classList.remove("show");
 });
 
 // Cancel crop
@@ -108,7 +103,7 @@ cancelBtn.addEventListener("click", () => {
     cropper.destroy();
     cropper = null;
   }
-  cropModal.style.display = "none";
+  cropModal.classList.remove("show");
 });
 
 // Render preview foto
